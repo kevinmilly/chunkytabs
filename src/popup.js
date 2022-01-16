@@ -3,24 +3,21 @@
 import './popup.css';
 
 (function() {
-  // We will make use of Storage API to get and store `count` value
-  // More information on Storage API can we found at
-  // https://developer.chrome.com/extensions/storage
-
-  // To get storage access, we have to mention it in `permissions` property of manifest.json file
-  // More information on Permissions can we found at
-  // https://developer.chrome.com/extensions/declare_permissions
-  const counterStorage = {
-    get: cb => {
-      chrome.storage.sync.get(['count'], result => {
-        cb(result.count);
+  const chunkStorage = {
+    get: async (key) => {
+      return new Promise((resolve, reject) => {
+        chrome.storage.local.get([key], function (result) {
+          if (result[key] === undefined) {
+            reject();
+          } else {
+            resolve(result[key]);
+          }
+        });
       });
     },
-    set: (value, cb) => {
+    set: (chunkToSave, cb) => {
       chrome.storage.sync.set(
-        {
-          count: value,
-        },
+       chunkToSave,
         () => {
           cb();
         }
@@ -28,74 +25,49 @@ import './popup.css';
     },
   };
 
-  function setupCounter(initialValue = 0) {
-    document.getElementById('counter').innerHTML = initialValue;
+  const chunkDropdown = document.getElementById('chunkDropdown');
+  const submit = document.getElementById('submit');
+  const clearForm = document.getElementById('clearForm');
 
-    document.getElementById('incrementBtn').addEventListener('click', () => {
-      updateCounter({
-        type: 'INCREMENT',
-      });
-    });
 
-    document.getElementById('decrementBtn').addEventListener('click', () => {
-      updateCounter({
-        type: 'DECREMENT',
-      });
-    });
+
+  async function setupChunks() {
+    const savedChunks = await chunkStorage.get();
+    console.log({savedChunks});
+    for(let i = 0; i >= savedChunks.length; i++) {
+      let option = document.createElement('option');
+      option.text = option.value = i;
+      select.add(option);
+    }
+    submit.addEventListener('click', addChunk);
+    
   }
 
-  function updateCounter({ type }) {
-    counterStorage.get(count => {
-      let newCount;
-
-      if (type === 'INCREMENT') {
-        newCount = count + 1;
-      } else if (type === 'DECREMENT') {
-        newCount = count - 1;
-      } else {
-        newCount = count;
-      }
-
-      counterStorage.set(newCount, () => {
-        document.getElementById('counter').innerHTML = newCount;
-
-        // Communicate with content script of
-        // active tab by sending a message
-        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-          const tab = tabs[0];
-
-          chrome.tabs.sendMessage(
-            tab.id,
-            {
-              type: 'COUNT',
-              payload: {
-                count: newCount,
-              },
-            },
-            response => {
-              console.log('Current count value passed to contentScript file');
-            }
-          );
-        });
-      });
-    });
+  function addChunk() {
+    const chunkToAdd = {
+      name: document.querySelector('input[name="gender"]:checked').value,
+      urgency: document.querySelector('input[name="urgency"]:checked').value,
+      difficulty: document.querySelector('input[name="difficulty"]:checked').value,
+      importance: document.querySelector('input[name="importance"]:checked').value,
+      details: document.querySelector('textarea[name="details"]').value,
+      chunkCategory: document.querySelector('select.options[select.selectedIndex]').value,
+      url: document.querySelector('input[name="importance"]:checked').value
+    }
+    chunkStorage.set(chunkToAdd);
   }
 
-  function restoreCounter() {
-    // Restore count value
-    counterStorage.get(count => {
-      if (typeof count === 'undefined') {
-        // Set counter value as 0
-        counterStorage.set(0, () => {
-          setupCounter(0);
-        });
+  function clearChunks(chunk) {
+    // Clear Chunks
+    chunkStorage.get(chunk => {
+      if (typeof count !== 'undefined') {
+        chunkStorage.set({}, alert("Chunks Cleared"));
       } else {
-        setupCounter(count);
+        setupChunks();
       }
     });
   }
 
-  document.addEventListener('DOMContentLoaded', restoreCounter);
+  document.addEventListener('DOMContentLoaded', setupChunks);
 
   // Communicate with background file by sending a message
   chrome.runtime.sendMessage(
