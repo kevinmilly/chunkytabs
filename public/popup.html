@@ -1,32 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>My Chrome Extension</title>
-    <link rel="stylesheet" href="popup.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chunky Tab</title>
+    <link rel="stylesheet" href="popup.css">
+
 </head>
+
 <body>
-  <div class="app">
-    <p class="counter-label">Counter</p>
-    <div id="counter" class="counter"></div>
-    <div class="button-container">
-      <button id="decrementBtn" class="button">-</button>
-      <button id="incrementBtn" class="button">+</button>
-    </div>
-
-    <hr class="divider" />
-
-    <p class="title">Chrome Extension is Ready!</p>
-    <p class="subtitle">Start by updating <code>popup.html</code></p>
-  </div>
-
-  <script src="popup.js"></script>
-
-  <!--
-    This HTML file opens when you click on icon from the toolbar.
-
-    To begin the development, run `npm run watch`.
-    To create a production bundle, use `npm run build`.
-  -->
+    <h2>Chunky Tab</h2>
+    <form>
+        <table class="blueTable" align="center">
+                <tr>
+                    <td class="col1">Task Name</td>
+                    <td class="col2"><input class="textInput" type="text" name="taskName" id="Name" placeholder="Enter Task Name Here..."></td>
+                </tr>
+                <tr>
+                    <td class="col1">Urgency</td>
+                    <td class="col2">
+                        <input type="radio" name="urgency" id="high" value="Now"> Now
+                        <input type="radio" name="urgency" id="average" value="Soon"> Soon
+                        <input type="radio" name="urgency" id="low" value="Later"> Later
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col1">Difficulty</td>
+                    <td class="col2">
+                        <input type="radio" name="difficulty" id="high" value="Hard"> Hard
+                        <input type="radio" name="difficulty" id="average" value="Medium"> Medium
+                        <input type="radio" name="difficulty" id="low" value="Easy"> Easy
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col1">Long Term Importance</td>
+                    <td class="col2">
+                        <input type="radio" name="importance" id="high" value="High"> High
+                        <input type="radio" name="importance" id="average" value="Average"> Average
+                        <input type="radio" name="importance" id="low" value="Low"> Low
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col1">Associated Site</td>
+                    <td class="col2"><input class="textInput" type="text" name="associatedSite" id="associatedSite" placeholder="Enter Task Name Here..."></td>
+                </tr>
+                <tr>
+                    <td class="col1">Additional Details</td>
+                    <td class="col2"><textarea class="textInput" name="details" id="details" cols="35" rows="4"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="col1">How to Chunk this Task:</td>
+                    <td class="col2"> 
+                        <input type="text" list="chunkSelection" />
+                        <datalist id="chunkSelection">
+                        </datalist>
+                    </td>
+                </tr>
+                <tr colspan="2" align="center">
+                </tr>
+        </table>
+        <div class="button-container">
+            <button type="submit" id="submit" class="button">Submit</button>
+            <button type="reset" id="clearForm" class="button">Clear</button>
+        </div>
+       </form>
+    <script src="popup.js"></script>
 </body>
+
 </html>

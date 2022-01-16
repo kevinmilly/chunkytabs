@@ -1,44 +1,54 @@
 'use strict';
 
-import './popup.css';
-
 (function() {
   const chunkStorage = {
-    get: async (key) => {
+    get:  () => {
       return new Promise((resolve, reject) => {
-        chrome.storage.local.get([key], function (result) {
-          if (result[key] === undefined) {
-            reject();
+        chrome.storage.sync.get(['chunks'], function(result) {
+          console.log({result});
+          if(!result.data) {
+            resolve(["Work", "School", "Family"])
           } else {
-            resolve(result[key]);
+             resolve(result);
           }
         });
       });
     },
-    set: (chunkToSave, cb) => {
-      chrome.storage.sync.set(
-       chunkToSave,
-        () => {
-          cb();
+    set: (chunkToSave) => {
+      chrome.storage.sync.get(['chunks'], function(chunks) {
+        if (Object.keys(chunks).length > 0) {
+            // The data array already exists, add to it the new server and nickname
+            chunks.data.push(chunkToSave);
+        } else {
+            // The data array doesn't exist yet, create it
+            chunks.data = [chunkToSave];
         }
-      );
-    },
+    
+        // Now save the updated chunks using set
+        chrome.storage.sync.set(chunks, function() {
+            console.log('Data successfully saved to the storage!');
+        });
+    });
+    }
   };
 
-  const chunkDropdown = document.getElementById('chunkDropdown');
+  const chunkSelection = document.getElementById('chunkSelection');
   const submit = document.getElementById('submit');
   const clearForm = document.getElementById('clearForm');
+  const taskTab = document.getElementById("associatedSite");
+  let currentTab = '';
 
 
 
   async function setupChunks() {
     const savedChunks = await chunkStorage.get();
     console.log({savedChunks});
-    for(let i = 0; i >= savedChunks.length; i++) {
-      let option = document.createElement('option');
-      option.text = option.value = i;
-      select.add(option);
-    }
+    savedChunks.forEach(chunkOption => chunkSelection.appendChild( new Option('',chunkOption)))
+
+    currentTab = await getCurrentTab();
+    console.log(currentTab);
+    taskTab.value = currentTab.url;
+
     submit.addEventListener('click', addChunk);
     
   }
@@ -53,6 +63,7 @@ import './popup.css';
       chunkCategory: document.querySelector('select.options[select.selectedIndex]').value,
       url: document.querySelector('input[name="importance"]:checked').value
     }
+    console.log({chunkToAdd});
     chunkStorage.set(chunkToAdd);
   }
 
@@ -67,18 +78,24 @@ import './popup.css';
     });
   }
 
+  async function getCurrentTab() {
+    let queryOptions = { active: true, currentWindow: true };
+    let [tab] = await chrome.tabs.query(queryOptions);
+    return tab;
+  }
+
   document.addEventListener('DOMContentLoaded', setupChunks);
 
   // Communicate with background file by sending a message
-  chrome.runtime.sendMessage(
-    {
-      type: 'GREETINGS',
-      payload: {
-        message: 'Hello, my name is Pop. I am from Popup.',
-      },
-    },
-    response => {
-      console.log(response.message);
-    }
-  );
+  // chrome.runtime.sendMessage(
+  //   {
+  //     type: 'GREETINGS',
+  //     payload: {
+  //       message: 'Hello, my name is Pop. I am from Popup.',
+  //     },
+  //   },
+  //   response => {
+  //     console.log(response.message);
+  //   }
+  // );
 })();

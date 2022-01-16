@@ -15,9 +15,8 @@ html {
 }
 
 body {
-    width: 350px;
-    height: 300px;
-    margin: 1rem;
+    width: 400px;
+    height: 350px;
 }
 
 h2 {
@@ -35,10 +34,10 @@ input[type='radio'] {
 table.blueTable {
     border: 1px solid #1C6EA4;
     background-color: #EEEEEE;
-    width: 100%;
+    width: aut0;
     text-align: left;
     border-collapse: collapse;
-    margin: 2rem;
+    margin: .5rem;
   }
   table.blueTable td, table.blueTable th {
     border: 1px solid #AAAAAA;
