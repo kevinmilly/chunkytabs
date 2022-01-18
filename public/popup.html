@@ -52,7 +52,7 @@
                   </tr>
                   <tr>
                       <td class="col1">Associated Site</td>
-                      <td class="col2"><input class="textInput" type="text" name="associatedSite" id="associatedSite" placeholder="Enter Task Name Here..."></td>
+                      <td class="col2"><input class="textInput" type="text" name="associatedSite" id="associatedSite" placeholder="Enter a site to associate task"></td>
                   </tr>
                   <tr>
                       <td class="col1">Additional Details</td>
@@ -78,7 +78,21 @@
       <input type="radio" name="tabs" id="tabtwo">
       <label for="tabtwo">View Tasks</label>
       <div class="tab">
-          Viewing Tasks
+          <table class="blueTable" id="viewTable" align="center">
+            <tr>
+              <th id="taskNameColumn">Task Name</th>
+              <th id="urgencyColumn">Urgency</th>
+              <th id="difficultyColumn">Difficulty</th>
+              <th id="importanceColumn">Importance</th>
+              <th id="detailsColumn">Details</th>
+              <th id="chunkColumn">Chunk</th>
+              <th id="urlColumn">URL</th>
+              <th id="actionColumn">Action</th>
+            </tr>
+            <tr>
+            
+            </tr>
+    </table>
       </div>
       </div>
     <script src="popup.js"></script>
