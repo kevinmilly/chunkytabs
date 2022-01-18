@@ -14,7 +14,7 @@
                   urgency: 'Soon', 
                   difficulty: 'Medium', 
                   importance: 'Low', 
-                  details: '', 
+                  details: '-', 
                   chunkCategory: 'Work', 
                   url: 'www.github.com'
                 },
@@ -107,13 +107,13 @@
         tr = document.createElement('tr');
     });
 
-    document.getElementById("taskNameColumn").addEventListener("click", sortTable(0));
-    document.getElementById("urgencyColumn").addEventListener("click", sortTable(1));
-    document.getElementById("difficultyColumn").addEventListener("click", sortTable(2));
-    document.getElementById("importanceColumn").addEventListener("click", sortTable(3));
-    document.getElementById("detailsColumn").addEventListener("click", sortTable(4));
-    document.getElementById("chunkColumn").addEventListener("click", sortTable(5));
-    document.getElementById("urlColumn").addEventListener("click", sortTable(6));
+    document.getElementById("taskNameColumn").addEventListener("click", sortTable(1));
+    document.getElementById("urgencyColumn").addEventListener("click", sortTable(2));
+    document.getElementById("difficultyColumn").addEventListener("click", sortTable(3));
+    document.getElementById("importanceColumn").addEventListener("click", sortTable(4));
+    document.getElementById("detailsColumn").addEventListener("click", sortTable(5));
+    document.getElementById("chunkColumn").addEventListener("click", sortTable(6));
+    document.getElementById("urlColumn").addEventListener("click", sortTable(7));
 
 
   }
@@ -162,6 +162,7 @@
       // Start by saying: no switching is done:
       switching = false;
       rows = table.rows;
+      console.log({rows})
       /* Loop through all table rows (except the
       first, which contains table headers): */
       for (i = 1; i < (rows.length - 1); i++) {
@@ -171,14 +172,9 @@
         one from current row and one from the next: */
         x = rows[i].getElementsByTagName("TD")[n];
         y = rows[i + 1].getElementsByTagName("TD")[n];
-        console.log({n});
         /* Check if the two rows should switch place,
         based on the direction, asc or desc: */
         if (dir == "asc") {
-          if(!x.innerHTML || !y.innerHTML) {
-            shouldSwitch = false;
-            break;
-          }
           if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
             // If so, mark as a switch and break the loop:
             shouldSwitch = true;
