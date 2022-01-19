@@ -2,100 +2,119 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chunky Tab</title>
-    <link rel="stylesheet" href="popup.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chunky Tab</title>
+  <link rel="stylesheet" href="popup.css">
 </head>
 
 <body>
-    <h2>Chunky Tab</h2>
-    <div class="tabs">
-      <input type="radio" name="tabs" id="tabone" checked="checked">
-      <label for="tabone">Set Task</label>
-      <div class="tab">
-        <form>
-          <table class="blueTable" align="center">
-                  <tr>
-                      <td class="col1">Task Name</td>
-                      <td class="col2"><input class="textInput" type="text" name="taskName" id="Name" placeholder="Enter Task Name Here..."></td>
-                  </tr>
-                  <tr>
-                      <td class="col1">Urgency</td>
-                      <td class="col2">
-                        <select name="" id="urgency">
-                          <option value="Now"> Now </option>
-                          <option value="Soon"> Soon</option>
-                          <option value="Later"> Later</option>
-                        </select>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="col1">Difficulty</td>
-                      <td class="col2">
-                        <select name="" id="difficulty">
-                          <option value="Hard"> Hard </option>
-                          <option value="Medium"> Medium</option>
-                          <option value="Easy"> Easy</option>
-                        </select>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="col1">Long Term Importance</td>
-                      <td class="col2">
-                        <select name="" id="importance">
-                          <option value="High"> High </option>
-                          <option value="Average"> Average</option>
-                          <option value="Low"> Low</option>
-                        </select>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="col1">Associated Site</td>
-                      <td class="col2"><input class="textInput" type="text" name="associatedSite" id="associatedSite" placeholder="Enter a site to associate task"></td>
-                  </tr>
-                  <tr>
-                      <td class="col1">Additional Details</td>
-                      <td class="col2"><textarea class="textInput" name="details" id="details" cols="35" rows="4"></textarea></td>
-                  </tr>
-                  <tr>
-                      <td class="col1">How to Chunk this Task:</td>
-                      <td class="col2"> 
-                          <input type="text" list="chunkSelection" />
-                          <datalist id="chunkSelection">
-                          </datalist>
-                      </td>
-                  </tr>
-                  <tr colspan="2" align="center">
-                  </tr>
-          </table>
-          <div class="button-container">
-              <button type="submit" id="submit" class="button">Submit</button>
-              <button type="reset" id="clearForm" class="button">Clear</button>
-          </div>
-       </form>
-      </div>
-      <input type="radio" name="tabs" id="tabtwo">
-      <label for="tabtwo">View Tasks</label>
-      <div class="tab">
-          <table class="blueTable" id="viewTable" align="center">
-            <tr>
-              <th id="taskNameColumn">Task Name</th>
-              <th id="urgencyColumn">Urgency</th>
-              <th id="difficultyColumn">Difficulty</th>
-              <th id="importanceColumn">Importance</th>
-              <th id="detailsColumn">Details</th>
-              <th id="chunkColumn">Chunk</th>
-              <th id="urlColumn">URL</th>
-              <th id="actionColumn">Action</th>
-            </tr>
-            <tr>
-            
-            </tr>
-    </table>
-      </div>
-      </div>
-    <script src="popup.js"></script>
+  <h2>Chunky Tab</h2>
+  <div class="tabs">
+    <input type="radio" name="tabs" id="tabone" checked="checked">
+    <label for="tabone">Set Task</label>
+    <div class="tab">
+      <form>
+        <table class="blueTable" align="center">
+          <tr>
+            <td class="col1">Task Name</td>
+            <td class="col2"><input class="textInput" type="text" name="taskName" id="Name"
+                placeholder="Enter Task Name Here..."></td>
+          </tr>
+          <tr>
+            <td class="col1">Urgency</td>
+            <td class="col2">
+              <select name="" id="urgency">
+                <option value="Now"> Now </option>
+                <option value="Soon"> Soon</option>
+                <option value="Later"> Later</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="col1">Difficulty</td>
+            <td class="col2">
+              <select name="" id="difficulty">
+                <option value="Hard"> Hard </option>
+                <option value="Medium"> Medium</option>
+                <option value="Easy"> Easy</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="col1">Long Term Importance</td>
+            <td class="col2">
+              <select name="" id="importance">
+                <option value="High"> High </option>
+                <option value="Average"> Average</option>
+                <option value="Low"> Low</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="col1">Associated Site</td>
+            <td class="col2"><input class="textInput" type="text" name="associatedSite" id="associatedSite"
+                placeholder="Enter a site to associate task"></td>
+          </tr>
+          <tr>
+            <td class="col1">Additional Details</td>
+            <td class="col2"><textarea class="textInput" name="details" id="details" cols="35" rows="4"></textarea></td>
+          </tr>
+          <tr>
+            <td class="col1">How to Chunk this Task:</td>
+            <td class="col2">
+              <input type="text" list="chunkSelection" />
+              <datalist id="chunkSelection">
+              </datalist>
+            </td>
+          </tr>
+          <tr colspan="2" align="center">
+          </tr>
+        </table>
+        <div class="button-container">
+          <button type="submit" id="submit" class="button">Submit</button>
+          <button type="reset" id="clearForm" class="button">Clear</button>
+        </div>
+      </form>
+    </div>
+    <input type="radio" name="tabs" id="tabtwo">
+    <label for="tabtwo">View Tasks</label>
+    <div class="tab">
+      <table class="blueTable" id="viewTable" align="center">
+        <tr>
+          <th id="taskNameColumn">Task Name</th>
+          <th id="urgencyColumn">Urgency</th>
+          <th id="difficultyColumn">Difficulty</th>
+          <th id="importanceColumn">Importance</th>
+          <th id="detailsColumn">Details</th>
+          <th id="chunkColumn">Chunk</th>
+          <th id="urlColumn">URL</th>
+          <th id="actionColumn">Action</th>
+        </tr>
+        <tr>
+
+        </tr>
+      </table>
+    </div>
+    <input type="radio" name="tabs" id="tabthree">
+    <label for="tabthree">View Chunks</label>
+    <div class="tab">
+      <table class="blueTable" id="launchChunkTable" align="center">
+        <tr>
+          <th id="chunkNameColumn">Chunk Name</th>
+          <th id="averageUrgencyColumn">Average Urgency</th>
+          <th id="averageDifficultyColumn">Average Difficulty</th>
+          <th id="averageImportanceColumn">Average Importance</th>
+          <th id="numberOfTasksColumn">Number of Tasks</th>
+          <th id="actionColumn">Action</th>
+        </tr>
+        <tr>
+
+        </tr>
+      </table>
+    </div>
+  </div>
+  <script src="popup.js"></script>
 </body>
 
 </html>
