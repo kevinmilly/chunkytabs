@@ -9,7 +9,9 @@
 </head>
 
 <body>
-  <h2>Chunky Tab</h2>
+  <div class="body-header">
+    <img src="./icons/icon_32.png" alt="">
+  </div>
   <div class="tabs">
     <input type="radio" name="tabs" id="tabone" checked="checked">
     <label for="tabone">Set Task</label>
@@ -63,7 +65,7 @@
           <tr>
             <td class="col1">How to Chunk this Task:</td>
             <td class="col2">
-              <input type="text" list="chunkSelection" />
+              <input type="text" list="chunkSelection" id="selected_chunk_to_add" />
               <datalist id="chunkSelection">
               </datalist>
             </td>
@@ -99,19 +101,27 @@
     <input type="radio" name="tabs" id="tabthree">
     <label for="tabthree">View Chunks</label>
     <div class="tab">
-      <table class="blueTable" id="launchChunkTable" align="center">
-        <tr>
-          <th id="chunkNameColumn">Chunk Name</th>
-          <th id="averageUrgencyColumn">Average Urgency</th>
-          <th id="averageDifficultyColumn">Average Difficulty</th>
-          <th id="averageImportanceColumn">Average Importance</th>
-          <th id="numberOfTasksColumn">Number of Tasks</th>
-          <th id="actionColumn">Action</th>
-        </tr>
-        <tr>
-
-        </tr>
-      </table>
+      <div class="chunk_launch_selection">
+        <h3 for="chunkLauncher">Choose a Chunk to Work on</h3>
+        <input type="text" list="chunkLauncher" id="selected_chunk_to_launch"/>
+        <datalist id="chunkLauncher">
+        </datalist>
+        <button type="button" id="launchChunk" class="button">Launch</button>
+      </div>
+      <div class="table-container">
+        <table class="blueTable" id="launchChunkTable" align="center">
+          <tr>
+            <th id="chunkNameColumn">Chunk Name</th>
+            <th id="averageUrgencyColumn">Average Urgency</th>
+            <th id="averageDifficultyColumn">Average Difficulty</th>
+            <th id="averageImportanceColumn">Average Importance</th>
+            <th id="numberOfTasksColumn">Number of Tasks</th>
+          </tr>
+          <tr>
+  
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
   <script src="popup.js"></script>

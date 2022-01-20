@@ -16,7 +16,7 @@
                   importance: 'Low',
                   details: '-',
                   chunkCategory: 'Work',
-                  url: 'www.github.com'
+                  url: 'http://www.github.com'
                 },
                 {
                   name: 'Call Mom about her gift',
@@ -25,7 +25,7 @@
                   importance: 'High',
                   details: 'She called the other day',
                   chunkCategory: 'Family',
-                  url: 'www.amazon.com'
+                  url: 'http://www.amazon.com'
                 },
                 {
                   name: 'Study for Exam',
@@ -34,7 +34,7 @@
                   importance: 'High',
                   details: 'I hate school',
                   chunkCategory: 'School',
-                  url: 'www.math.com'
+                  url: 'http://www.math.com'
                 }
               ]
             )
@@ -77,12 +77,13 @@
   const submit = document.getElementById('submit');
   const taskTab = document.getElementById("associatedSite");
   let currentTab = '';
+  let savedChunks;
 
 
 
   async function setupChunks() {
     const savedChunkNames = await chunkStorage.getChunkNames();
-    const savedChunks = await chunkStorage.getChunks();
+    savedChunks = await chunkStorage.getChunks();
 
     setUpViewTable(savedChunks);
 
@@ -97,7 +98,6 @@
   }
 
   function setUpViewTable(savedChunksForTable) {
-    console.log({ savedChunksForTable });
     const table = document.getElementById('viewTable');
     let td;
     let tr = document.createElement('tr');
@@ -118,12 +118,10 @@
   function setupLaunchTable(categories, chunks) {
 
     const finalizedChunkInfo = categories.map(category => {
-      console.log(category);
       const applicableChunks = chunks.filter(chunk => chunk.chunkCategory === category);
-      console.log({applicableChunks});
       return (
         {
-          [category]: applicableChunks,
+          category,
           avgUrgency: getMostFrequent(applicableChunks.map(chunk => chunk.urgency)),
           avgDifficulty: getMostFrequent(applicableChunks.map(chunk => chunk.difficulty)),
           avgImportance: getMostFrequent(applicableChunks.map(chunk => chunk.importance)),
@@ -131,7 +129,6 @@
         }
       )
     })
-    console.log({finalizedChunkInfo});
 
     const table = document.getElementById('launchChunkTable');
     let td;
@@ -142,12 +139,28 @@
         td.appendChild(document.createTextNode(chunkInfo[property]));
         tr.appendChild(td);
       });
-      td = document.createElement('td').appendChild(document.createTextNode("Launch"));
-      td.addEventListener("click", (rowIndex) => launchChunk(rowIndex));
       tr.appendChild(td);
       table.appendChild(tr);
       tr = document.createElement('tr');
     });
+
+   const chunkLauncher = document.getElementById("chunkLauncher");
+   categories.forEach(category => chunkLauncher.appendChild(new Option('', category)))
+
+    document.getElementById("launchChunk").addEventListener("click", function() {
+      const chunkToLaunch = document.getElementById("selected_chunk_to_launch").value;
+
+      if(!!chunkToLaunch) {
+        const matchingSavedChunks = savedChunks.filter(chunk => chunk.chunkCategory === chunkToLaunch);
+        console.log(savedChunks);
+        matchingSavedChunks.forEach(matchedChunk => {
+          console.log(`Launching ${matchedChunk.url}`);
+          chrome.tabs.create({
+            url:matchedChunk ? matchedChunk.url : 'https://opensea.io/collection/pseudolife'
+          });
+        })
+      }
+    })
   }
 
 
@@ -161,19 +174,7 @@
       chunkCategory: document.querySelector('select.options[select.selectedIndex]').value,
       url: document.querySelector('input[name="importance"]:checked').value
     }
-    console.log({ chunkToAdd });
     chunkStorage.set(chunkToAdd);
-  }
-
-  function clearChunks(chunk) {
-    // Clear Chunks
-    chunkStorage.get(chunk => {
-      if (typeof count !== 'undefined') {
-        chunkStorage.set({}, alert("Chunks Cleared"));
-      } else {
-        setupChunks();
-      }
-    });
   }
 
   async function getCurrentTab() {
@@ -182,16 +183,7 @@
     return tab;
   }
 
-  function deleteRow(rowIndex) {
-    console.log(`Deleting ${rowIndex}`);
-  }
-
-  function launchChunk(rowIndex) {
-    console.log(console.log(`Launching ${rowIndex}`));
-  }
-
   function getMostFrequent(arr) {
-    console.log({arr});
     const hashmap = arr.reduce((acc, val) => {
       acc[val] = (acc[val] || 0) + 1
       return acc
