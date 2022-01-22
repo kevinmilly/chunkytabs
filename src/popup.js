@@ -188,7 +188,7 @@
               url: matchedChunk
                 ? matchedChunk.url
                 : "https://opensea.io/collection/pseudolife",
-            });
+            }, () => chrome.tabs.executeScript(tab.id,{code:`document.title = '${matchedChunk.name}'`}));
           });
         }
       });
