@@ -7,26 +7,17 @@
     "16": "icons/icon_16.png",
     "32": "icons/icon_32.png"
   },
-  "background": {
-    "service_worker": "background.js"
-  },
   "action": {
     "default_title": "Chunky Tab",
     "default_popup": "popup.html"
   },
   "permissions": [
     "storage",
-    "tabs"
+    "tabs",
+    "scripting",
+    "activeTab"
   ],
-  "content_scripts": [
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "run_at": "document_idle",
-      "js": [
-        "contentScript.js"
-      ]
-    }
-  ]
+  "host_permissions": [
+    "https://*/*"
+]
 }

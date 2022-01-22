@@ -182,17 +182,20 @@
             (chunk) => chunk.chunkCategory === chunkToLaunch
           );
           console.log(savedChunks);
-          matchingSavedChunks.forEach((matchedChunk) => {
-            console.log(`Launching ${matchedChunk.url}`);
-            chrome.tabs.create({
-              url: matchedChunk
-                ? matchedChunk.url
-                : "https://opensea.io/collection/pseudolife",
-            }, () => chrome.tabs.executeScript(tab.id,{code:`document.title = '${matchedChunk.name}'`}));
+          chrome.windows.create({ url: chrome.runtime.getURL("popup.html#view-tasks"), type: "normal", focused: true }, function(window) {
+            matchingSavedChunks.forEach((matchedChunk) => {
+              console.log(`Launching ${matchedChunk.url}`);
+              chrome.tabs.create({
+                url: matchedChunk
+                  ? matchedChunk.url
+                  : "https://opensea.io/collection/pseudolife",
+                  windowId: window.id
+              });
+            });
           });
-        }
-      });
-  }
+    }
+  });
+}
 
   function addChunk() {
     chunkStorage.set({
@@ -231,6 +234,10 @@
 
   function randomId() {
     return (Math.random() + 1).toString(36).substring(2);
+  }
+
+  function changeTabTitle(title) {
+    document.title = title;
   }
 
   //Tabs functionality
