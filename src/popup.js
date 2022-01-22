@@ -21,7 +21,7 @@
             resolve(["Work", "School", "Family"])
           } else {
             console.log(result.chunks);
-            resolve(result.chunks.map(r => r.chunkCategory));
+            resolve(result.chunks.map(r => r.chunkCategory).filter((el, index, arr) => arr.indexOf(el) === index));
           }
         });
       });
@@ -72,11 +72,30 @@
     let td;
     let tr = document.createElement('tr');
     savedChunksForTable.sort((a, b) => a.chunkCategory.localeCompare(b.chunkCategory)).forEach((chunk, rowIndex) => {
-      Object.keys(chunk).forEach((property, i) => {
-        td = document.createElement('td');
-        td.appendChild(document.createTextNode(chunk[property]));
-        tr.appendChild(td);
-      });
+      // Object.keys(chunk).forEach((property, i) => {
+      //   td = document.createElement('td');
+      //   td.appendChild(document.createTextNode(chunk[property]));
+      //   tr.appendChild(td);
+      // });
+      td = document.createElement('td');
+      td.appendChild(document.createTextNode(chunk.name));
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.appendChild(document.createTextNode(chunk.urgency));
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.appendChild(document.createTextNode(chunk.difficulty));
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.appendChild(document.createTextNode(chunk.importance));
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.appendChild(document.createTextNode(chunk.chunkCategory));
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.appendChild(document.createTextNode(chunk.url));
+      tr.appendChild(td);
+
       checkboxCompletion = document.createElement('input');
       checkboxCompletion.type = 'checkbox';
       checkboxCompletion.setAttribute("id",`completed-${chunk.name}`)
