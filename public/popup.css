@@ -112,6 +112,7 @@ table.blueTable {
     border-collapse: collapse;
     margin: .5rem;
   }
+
   table.blueTable td, table.blueTable th {
     border: 1px solid #AAAAAA;
     padding: 3px 2px;
@@ -135,6 +136,8 @@ table.blueTable {
     color: #FFFFFF;
     border-left: 2px solid #D0E4F5;
     position: sticky;
+    display: flex;
+    justify-content: center;
   }
   table.blueTable thead th:first-child {
     border-left: none;
@@ -212,4 +215,12 @@ table.blueTable {
     width: 50px;
     border: .5px dashed #000;
     opacity: .1;
+}
+
+input[type='checkbox'], #actionColumn {
+  margin: .3rem 0 0 .4rem;
+}
+
+.viewTable td, th {
+  text-align: center;
 }

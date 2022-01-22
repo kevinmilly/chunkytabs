@@ -4,71 +4,40 @@
   const chunkStorage = {
     getChunks: () => {
       return new Promise((resolve, reject) => {
-        chrome.storage.sync.get(['chunks'], function (results) {
-          if (!results.data) {
-            //resolve([])
-            resolve(
-              [
-                {
-                  name: 'Finish PR',
-                  urgency: 'Soon',
-                  difficulty: 'Medium',
-                  importance: 'Low',
-                  details: '-',
-                  chunkCategory: 'Work',
-                  url: 'http://www.github.com'
-                },
-                {
-                  name: 'Call Mom about her gift',
-                  urgency: 'Now',
-                  difficulty: 'Medium',
-                  importance: 'High',
-                  details: 'She called the other day',
-                  chunkCategory: 'Family',
-                  url: 'http://www.amazon.com'
-                },
-                {
-                  name: 'Study for Exam',
-                  urgency: 'Soon',
-                  difficulty: 'Hard',
-                  importance: 'High',
-                  details: 'I hate school',
-                  chunkCategory: 'School',
-                  url: 'http://www.math.com'
-                }
-              ]
-            )
+        chrome.storage.sync.get(function (result) {
+          console.log(result.chunks);
+          if (Object.keys(result.chunks).length === 0) {
+            resolve([])
           } else {
-            resolve(results);
+            resolve(result.chunks);
           }
         });
       });
     },
     getChunkNames: () => {
       return new Promise((resolve, reject) => {
-        chrome.storage.sync.get(['chunks'], function (result) {
-          if (!result.data) {
+        chrome.storage.sync.get(function (result) {
+          if (!result.chunks) {
             resolve(["Work", "School", "Family"])
           } else {
-            resolve(result.map(r => r.name));
+            console.log(result.chunks);
+            resolve(result.chunks.map(r => r.chunkCategory));
           }
         });
       });
     },
     set: (chunkToSave) => {
-      chrome.storage.sync.get(['chunks'], function (chunks) {
-        if (Object.keys(chunks).length > 0) {
-          // The data array already exists, add to it the new server and nickname
-          chunks.data.push(chunkToSave);
+      chrome.storage.sync.get(['chunks'], function(result) {
+        if(Object.keys(result.chunks).length === 0) {
+          chrome.storage.sync.set({chunks: [chunkToSave]}, function () {
+            console.log('Data successfully saved to the storage!');
+          });
         } else {
-          // The data array doesn't exist yet, create it
-          chunks.data = [chunkToSave];
+          result.chunks.push(chunkToSave);
+          chrome.storage.sync.set({chunks: result.chunks}, function () {
+            console.log('Data successfully saved to the storage!');
+          });
         }
-
-        // Now save the updated chunks using set
-        chrome.storage.sync.set(chunks, function () {
-          console.log('Data successfully saved to the storage!');
-        });
       });
     }
   };
@@ -99,6 +68,7 @@
 
   function setUpViewTable(savedChunksForTable) {
     const table = document.getElementById('viewTable');
+    let checkboxCompletion;
     let td;
     let tr = document.createElement('tr');
     savedChunksForTable.sort((a, b) => a.chunkCategory.localeCompare(b.chunkCategory)).forEach((chunk, rowIndex) => {
@@ -107,16 +77,17 @@
         td.appendChild(document.createTextNode(chunk[property]));
         tr.appendChild(td);
       });
-      td = document.createElement('td').appendChild(document.createTextNode("Delete"));
-      td.addEventListener("click", (rowIndex) => deleteRow(rowIndex));
-      tr.appendChild(td);
+      checkboxCompletion = document.createElement('input');
+      checkboxCompletion.type = 'checkbox';
+      checkboxCompletion.setAttribute("id",`completed-${chunk.name}`)
+      tr.appendChild(checkboxCompletion);
       table.appendChild(tr);
       tr = document.createElement('tr');
     });
   }
 
   function setupLaunchTable(categories, chunks) {
-
+    console.log({categories});
     const finalizedChunkInfo = categories.map(category => {
       const applicableChunks = chunks.filter(chunk => chunk.chunkCategory === category);
       return (
@@ -165,16 +136,14 @@
 
 
   function addChunk() {
-    const chunkToAdd = {
-      name: document.querySelector('input[name="gender"]:checked').value,
-      urgency: document.querySelector('input[name="urgency"]:checked').value,
-      difficulty: document.querySelector('input[name="difficulty"]:checked').value,
-      importance: document.querySelector('input[name="importance"]:checked').value,
-      details: document.querySelector('textarea[name="details"]').value,
-      chunkCategory: document.querySelector('select.options[select.selectedIndex]').value,
-      url: document.querySelector('input[name="importance"]:checked').value
-    }
-    chunkStorage.set(chunkToAdd);
+    chunkStorage.set({
+      name: document.getElementById('taskName').value,
+      urgency: document.getElementById('urgency').value,
+      difficulty: document.getElementById('difficulty').value,
+      importance: document.getElementById('importance').value,
+      chunkCategory: document.getElementById('selected_chunk_to_add').value,
+      url: document.getElementById('associatedSite').value
+    });
   }
 
   async function getCurrentTab() {
@@ -184,11 +153,13 @@
   }
 
   function getMostFrequent(arr) {
-    const hashmap = arr.reduce((acc, val) => {
-      acc[val] = (acc[val] || 0) + 1
-      return acc
-    }, {})
-    return Object.keys(hashmap).reduce((a, b) => hashmap[a] > hashmap[b] ? a : b)
+    if(arr.length > 0) {
+      const hashmap = arr.reduce((acc, val) => {
+        acc[val] = (acc[val] || 0) + 1
+        return acc
+      }, {})
+      return Object.keys(hashmap).reduce((a, b) => hashmap[a] > hashmap[b] ? a : b)
+    }
   }
 
   document.addEventListener('DOMContentLoaded', setupChunks);
