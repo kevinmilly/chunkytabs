@@ -4,118 +4,110 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chunky Tab</title>
+  <title>Chunky Tabs</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 
 <body>
-  <div class="body-header">
-    <img src="./icons/icon_32.png" alt="">
-  </div>
-  <div class="tabs">
-    <input type="radio" name="tabs" id="tabone" checked="checked">
-    <label for="tabone">Set Task</label>
-    <div class="tab">
-      <form>
-        <table class="blueTable" align="center">
-          <tr>
-            <td class="col1">Task Name</td>
-            <td class="col2"><input class="textInput" type="text" name="taskName" id="taskName"
-                placeholder="Enter Task Name Here...", required></td>
-          </tr>
-          <tr>
-            <td class="col1">Urgency</td>
-            <td class="col2">
-              <select name="" id="urgency">
-                <option value="Now"> Now </option>
-                <option value="Soon"> Soon</option>
-                <option value="Later"> Later</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td class="col1">Difficulty</td>
-            <td class="col2">
-              <select name="" id="difficulty">
-                <option value="Hard"> Hard </option>
-                <option value="Medium"> Medium</option>
-                <option value="Easy"> Easy</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td class="col1">Long Term Importance</td>
-            <td class="col2">
-              <select name="" id="importance">
-                <option value="High"> High </option>
-                <option value="Average"> Average</option>
-                <option value="Low"> Low</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td class="col1">Associated Site</td>
-            <td class="col2"><input class="textInput" type="text" name="associatedSite" id="associatedSite"
-                placeholder="Enter a site to associate task"></td>
-          </tr>
-          <tr>
-            <td class="col1">How to Chunk this Task:</td>
-            <td class="col2">
-              <input type="text" list="chunkSelection" id="selected_chunk_to_add" required/>
-              <datalist id="chunkSelection">
-              </datalist>
-            </td>
-          </tr>
-          <tr colspan="2" align="center">
-          </tr>
-        </table>
-        <div class="button-container">
-          <button type="submit" id="submit" class="button">Submit</button>
-          <button type="reset" id="clearForm" class="button">Clear</button>
-        </div>
-      </form>
+  <h1>CHUNKY TABS</h1>
+  <hr><br/>
+  <div class="wrapper">
+    <div class="buttonWrapper">
+      <button class="tab-button active" style="border-top-left-radius: 10px;" data-id="add-task">Add ➕</button>
+      <button class="tab-button" data-id="view-tasks">View 🔎✔️</button>
+      <button class="tab-button" style="border-top-right-radius: 10px;" data-id="launch-chunks">Launch 🚀</button>
     </div>
-    <input type="radio" name="tabs" id="tabtwo">
-    <label for="tabtwo">View Tasks</label>
-    <div class="tab">
-      <table class="blueTable" id="viewTable" align="center">
-        <tr>
-          <th id="taskNameColumn">Task Name</th>
-          <th id="urgencyColumn">Urgency</th>
-          <th id="difficultyColumn">Difficulty</th>
-          <th id="importanceColumn">Importance</th>
-          <th id="chunkColumn">Chunk</th>
-          <th id="urlColumn">URL</th>
-          <th id="actionColumn">✅ </th>
-        </tr>
-        <tr>
-
-        </tr>
-      </table>
-    </div>
-    <input type="radio" name="tabs" id="tabthree">
-    <label for="tabthree">View Chunks</label>
-    <div class="tab">
-      <div class="chunk_launch_selection">
-        <h3 for="chunkLauncher">Choose a Chunk to Work on</h3>
-        <input type="text" list="chunkLauncher" id="selected_chunk_to_launch"/>
-        <datalist id="chunkLauncher">
-        </datalist>
-        <button type="button" id="launchChunk" class="button">Launch</button>
+    <div class="contentWrapper">
+      <div class="content active" id="add-task">
+        <form>
+          <table class="blueTable" align="center">
+            <tr>
+              <td class="col1">Task Name</td>
+              <td class="col2"><input class="textInput" type="text" name="taskName" id="taskName"
+                  placeholder="Enter Task Name Here...", required></td>
+            </tr>
+            <tr>
+              <td class="col1">Urgency</td>
+              <td class="col2">
+                <select name="" id="urgency">
+                  <option value="Now"> Now </option>
+                  <option value="Soon"> Soon</option>
+                  <option value="Later"> Later</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="col1">Difficulty</td>
+              <td class="col2">
+                <select name="" id="difficulty">
+                  <option value="Hard"> Hard </option>
+                  <option value="Medium"> Medium</option>
+                  <option value="Easy"> Easy</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="col1">Long Term Importance</td>
+              <td class="col2">
+                <select name="" id="importance">
+                  <option value="High"> High </option>
+                  <option value="Average"> Average</option>
+                  <option value="Low"> Low</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="col1">Associated Site</td>
+              <td class="col2"><input class="textInput" type="text" name="associatedSite" id="associatedSite"
+                  placeholder="Enter a site to associate task"></td>
+            </tr>
+            <tr>
+              <td class="col1">How to Chunk this Task:</td>
+              <td class="col2">
+                <input type="text" list="chunkSelection" id="selected_chunk_to_add" required/>
+                <datalist id="chunkSelection">
+                </datalist>
+              </td>
+            </tr>
+            <tr colspan="2" align="center">
+            </tr>
+          </table>
+          <div class="button-container">
+            <button type="submit" id="submit" class="button">Submit</button>
+            <button type="reset" id="clearForm" class="button">Clear</button>
+          </div>
+        </form>
       </div>
-      <div class="table-container">
-        <table class="blueTable" id="launchChunkTable" align="center">
+      <div class="content" id="view-tasks">
+        <table class="blueTable" id="viewTable" align="center">
           <tr>
-            <th id="chunkNameColumn">Chunk Name</th>
-            <th id="averageUrgencyColumn">Average Urgency</th>
-            <th id="averageDifficultyColumn">Average Difficulty</th>
-            <th id="averageImportanceColumn">Average Importance</th>
-            <th id="numberOfTasksColumn">Number of Tasks</th>
-          </tr>
-          <tr>
-  
+            <th id="taskNameColumn">Task Name</th>
+            <th id="urgencyColumn">Urgency</th>
+            <th id="difficultyColumn">Difficulty</th>
+            <th id="importanceColumn">Importance</th>
+            <th id="chunkColumn">Chunk</th>
+            <th id="urlColumn">URL</th>
+            <th id="actionColumn">✅ </th>
           </tr>
         </table>
+      </div>
+      <div class="content" id="launch-chunks">
+        <div class="chunk_launch_selection">
+          <h3 for="chunkLauncher">Choose a Chunk to Work on</h3>
+          <select type="text" list="chunkLauncher" id="selected_chunk_to_launch"></select>
+          <button type="button" id="launchChunk" class="button">Launch</button>
+        </div>
+        <div class="table-container">
+          <table class="blueTable" id="launchChunkTable" align="center">
+            <tr>
+              <th id="chunkNameColumn">Chunk Name</th>
+              <th id="averageUrgencyColumn">Average Urgency</th>
+              <th id="averageDifficultyColumn">Average Difficulty</th>
+              <th id="averageImportanceColumn">Average Importance</th>
+              <th id="numberOfTasksColumn">Task(s)</th>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
   </div>
