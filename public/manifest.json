@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Chunky Tab",
+  "name": "Chunky Tabs",
   "version": "0.1.0",
   "description": "Extension for setting todos on tabs using the chunking method.",
   "icons": {
@@ -14,10 +14,6 @@
   "permissions": [
     "storage",
     "tabs",
-    "scripting",
-    "activeTab"
-  ],
-  "host_permissions": [
-    "https://*/*"
-]
+    "scripting"
+  ]
 }

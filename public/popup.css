@@ -51,7 +51,7 @@ img{
  }
  
  .wrapper {
-   width: 90%;
+   width: 98%;
    margin: auto;
    background-color: white;
    border-radius: 10px;
@@ -117,10 +117,11 @@ input[type='radio'] {
   }
 
 .table-container  {
-  overflow-y: auto;
+
   max-height: 9rem;
   margin-bottom: 3rem;
   border: solid, rgb(128, 128, 231);
+  width: 100%;
 }
 
 table.blueTable {
@@ -135,6 +136,7 @@ table.blueTable {
   table.blueTable td, table.blueTable th {
     border: 1px solid #AAAAAA;
     padding: 3px 2px;
+    width: auto;
   }
   table.blueTable tbody td {
     font-size: 13px;
@@ -190,7 +192,7 @@ table.blueTable {
     height: auto;
     display: inline;
     text-align: center;
-    padding: 20px;
+    margin-top: 2rem;
 }
 
 .title {
@@ -239,4 +241,12 @@ input[type='checkbox'], #actionColumn {
 
 #viewTable td, th {
   text-align: center;
+}
+
+#launchChunkTable td, th {
+  text-align:left;
+}
+
+#launchChunkTable {
+  margin-top: 2rem;
 }
