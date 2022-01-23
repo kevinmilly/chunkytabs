@@ -5,7 +5,6 @@
     getChunks: () => {
       return new Promise((resolve, reject) => {
         chrome.storage.sync.get(function (result) {
-          console.log(result.chunks);
           if (!result.chunks || result.chunks.length === 0) {
             const initialChunk = {
               id: randomId(),
@@ -24,41 +23,22 @@
         });
       });
     },
-    getChunkNames: () => {
-      return new Promise((resolve, reject) => {
-        chrome.storage.sync.get(function (result) {
-          if (!result.chunks) {
-            resolve(["Work", "School", "Family"]);
-          } else {
-            console.log(result.chunks);
-            resolve(
-              result.chunks
-                .map((r) => r.chunkCategory)
-                .filter((el, index, arr) => arr.indexOf(el) === index)
-            );
-          }
-        });
-      });
-    },
     set: (chunkToSave) => {
       chrome.storage.sync.get(["chunks"], function (result) {
         if (!result.chunks || result.chunks.length === 0) {
-          chrome.storage.sync.set({ chunks: [chunkToSave] }, function () {
-            console.log("Data successfully saved to the storage!");
-          });
+          chrome.storage.sync.set({ chunks: [chunkToSave] }, function () {});
         } else {
           result.chunks.push(chunkToSave);
-          chrome.storage.sync.set({ chunks: result.chunks }, function () {
-            console.log("Data successfully saved to the storage!");
-          });
+          chrome.storage.sync.set({ chunks: result.chunks }, function () {});
         }
       });
     },
     remove: (chunkId) => {
       chrome.storage.sync.get(["chunks"], function (result) {
         const newChunks = result.chunks.filter((chunk) => chunk.id !== chunkId);
-        chrome.storage.sync.set({ chunks: newChunks }, function () {
+        chrome.storage.sync.set({ chunks: newChunks }, async function () {
           console.log(`Successfully removed chunk Id: ${chunkId}`);
+          setupChunks();
         });
       });
     },
@@ -72,7 +52,10 @@
 
   async function setupChunks() {
     savedChunks = await chunkStorage.getChunks();
-    const savedChunkNames = await chunkStorage.getChunkNames();
+    console.log({savedChunks});
+    const savedChunkNames = savedChunks
+      .map((r) => r.chunkCategory)
+      .filter((el, index, arr) => arr.indexOf(el) === index);
 
     savedChunkNames.forEach((chunkOption) =>
       chunkSelection.appendChild(new Option("", chunkOption))
@@ -81,6 +64,8 @@
     currentTab = await getCurrentTab();
     taskTab.value = currentTab.url;
 
+    restartTable('launchChunkTable');
+    restartTable('viewTable');
     setupLaunchTable(savedChunkNames, savedChunks);
     setUpViewTable(savedChunks);
 
@@ -111,7 +96,7 @@
         td.appendChild(document.createTextNode(chunk.chunkCategory));
         tr.appendChild(td);
         td = document.createElement("td");
-        td.appendChild(document.createTextNode(chunk.url));
+        td.appendChild(document.createTextNode(chunk.url.substring(0, 41)));
         tr.appendChild(td);
 
         checkboxCompletion = document.createElement("input");
@@ -125,8 +110,6 @@
   }
 
   function setupLaunchTable(categories, chunks) {
-    console.log({ categories });
-    console.log({chunks});
     const finalizedChunkInfo = categories.map((category) => {
       const applicableChunks = chunks.filter(
         (chunk) => chunk.chunkCategory === category
@@ -147,8 +130,6 @@
     });
 
     const table = document.getElementById("launchChunkTable");
-    console.log({table});
-    console.log(document.querySelectorAll("table"));
     let td;
     let tr = document.createElement("tr");
     if (finalizedChunkInfo) {
@@ -181,21 +162,26 @@
           const matchingSavedChunks = savedChunks.filter(
             (chunk) => chunk.chunkCategory === chunkToLaunch
           );
-          console.log(savedChunks);
-          chrome.windows.create({ url: chrome.runtime.getURL("popup.html#view-tasks"), type: "normal", focused: true }, function(window) {
-            matchingSavedChunks.forEach((matchedChunk) => {
-              console.log(`Launching ${matchedChunk.url}`);
-              chrome.tabs.create({
-                url: matchedChunk
-                  ? matchedChunk.url
-                  : "https://opensea.io/collection/pseudolife",
-                  windowId: window.id
+          chrome.windows.create(
+            {
+              url: chrome.runtime.getURL("popup.html#view-tasks"),
+              type: "normal",
+              focused: true,
+            },
+            function (window) {
+              matchingSavedChunks.forEach((matchedChunk) => {
+                chrome.tabs.create({
+                  url: matchedChunk
+                    ? matchedChunk.url
+                    : "https://opensea.io/collection/pseudolife",
+                  windowId: window.id,
+                });
               });
-            });
-          });
-    }
-  });
-}
+            }
+          );
+        }
+      });
+  }
 
   function addChunk() {
     chunkStorage.set({
@@ -209,8 +195,7 @@
     });
   }
 
-  function completeTask(event) {
-    console.log(`Completing id: ${event.target.id}`);
+  async function completeTask(event) {
     chunkStorage.remove(event.target.id);
   }
 
@@ -238,6 +223,15 @@
 
   function changeTabTitle(title) {
     document.title = title;
+  }
+
+  function restartTable(tableId) {
+    var tableHeaderRowCount = 1;
+    var table = document.getElementById(tableId);
+    var rowCount = table.rows.length;
+    for (var i = tableHeaderRowCount; i < rowCount; i++) {
+        table.deleteRow(tableHeaderRowCount);
+}
   }
 
   //Tabs functionality
