@@ -52,7 +52,7 @@
 
   async function setupChunks() {
     savedChunks = await chunkStorage.getChunks();
-    console.log({savedChunks});
+    console.log({ savedChunks });
     const savedChunkNames = savedChunks
       .map((r) => r.chunkCategory)
       .filter((el, index, arr) => arr.indexOf(el) === index);
@@ -64,8 +64,8 @@
     currentTab = await getCurrentTab();
     taskTab.value = currentTab.url;
 
-    restartTable('launchChunkTable');
-    restartTable('viewTable');
+    restartTable("launchChunkTable");
+    restartTable("viewTable");
     setupLaunchTable(savedChunkNames, savedChunks);
     setUpViewTable(savedChunks);
 
@@ -170,12 +170,13 @@
             },
             function (window) {
               matchingSavedChunks.forEach((matchedChunk) => {
-                chrome.tabs.create({
-                  url: matchedChunk
-                    ? matchedChunk.url
-                    : "https://opensea.io/collection/pseudolife",
-                  windowId: window.id,
-                });
+                chrome.tabs.create(
+                  {
+                    url: matchedChunk
+                      ? matchedChunk.url
+                      : "https://opensea.io/collection/pseudolife",
+                    windowId: window.id,
+                  });
               });
             }
           );
@@ -230,8 +231,8 @@
     var table = document.getElementById(tableId);
     var rowCount = table.rows.length;
     for (var i = tableHeaderRowCount; i < rowCount; i++) {
-        table.deleteRow(tableHeaderRowCount);
-}
+      table.deleteRow(tableHeaderRowCount);
+    }
   }
 
   //Tabs functionality
