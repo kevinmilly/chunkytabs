@@ -1,7 +1,7 @@
 # <img src="public/icons/icon_48.png" width="45" align="left"> Chunky Tab
 
 ## Features
-
+Vanilla JS version of this productivity chrome extension
 
 ## Install
 
